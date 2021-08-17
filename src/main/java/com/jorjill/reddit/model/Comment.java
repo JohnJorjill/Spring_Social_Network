@@ -19,6 +19,7 @@ public class Comment {
     @NotEmpty
     private String text;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "postId", referencedColumnName = "postId")
     private Post post;
     private Instant createdDate;
     @ManyToOne(fetch = FetchType.LAZY)
