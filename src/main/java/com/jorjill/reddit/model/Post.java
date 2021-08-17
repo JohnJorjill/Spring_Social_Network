@@ -1,5 +1,6 @@
 package com.jorjill.reddit.model;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
