@@ -27,6 +27,7 @@ public class AuthService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final MailService mailService;
 
+    // signup service business logics
     @Transactional
     public void signup(RegisterRequest registerRequest){
 
@@ -50,6 +51,7 @@ public class AuthService {
                 "http://localhost:8080/api/auth/accountVerification/" + token));
     }
 
+    // generate token and save token
     private String generateVerificationToken(User user) {
         String token = UUID.randomUUID().toString();
         VerificationToken verificationToken = new VerificationToken();
@@ -61,12 +63,14 @@ public class AuthService {
         return token;
     }
 
+    // verify account
     public void verifyAccount(String token) {
         Optional<VerificationToken> verificationToken = verificationTokenRepository.findByToken(token);
         verificationToken.orElseThrow(()->new SpringRedditException("Invalid Token"));
         fetchUserAndEnable(verificationToken.get());
     }
 
+    // verify account helper
     private void fetchUserAndEnable(VerificationToken verificationToken){
         String username = verificationToken.getUser().getUsername();
         User user = userRepository.findByUsername(username).orElseThrow(()->new SpringRedditException("User not found"));

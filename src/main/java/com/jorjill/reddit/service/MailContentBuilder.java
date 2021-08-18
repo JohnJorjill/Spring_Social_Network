@@ -11,6 +11,7 @@ public class MailContentBuilder {
 
     private final TemplateEngine templateEngine;
 
+    // get message and build email using thymeleaf template
     String build(String message){
         Context context = new Context();
         context.setVariable("message",message);

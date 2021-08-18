@@ -18,6 +18,8 @@ public class VerificationToken {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String token;
+
+    // one token has one user
     @OneToOne(fetch = FetchType.LAZY)
     private User user;
     private Instant expiryDate;

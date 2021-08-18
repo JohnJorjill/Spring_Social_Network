@@ -18,10 +18,14 @@ public class Comment {
     private Long id;
     @NotEmpty
     private String text;
+
+    // many comments has one post
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "postId", referencedColumnName = "postId")
     private Post post;
     private Instant createdDate;
+
+    // many comments has one user
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="userId",referencedColumnName = "userId")
     private User user;

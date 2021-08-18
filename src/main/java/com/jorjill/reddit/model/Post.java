@@ -32,6 +32,8 @@ public class Post {
     @JoinColumn(name="userId", referencedColumnName = "userId")
     private User user;
     private Instant createdDate;
+
+    // one subreddit has many posts
     @ManyToOne(fetch=FetchType.LAZY)
     @JoinColumn(name="id",referencedColumnName = "id")
     private Subreddit subreddit;

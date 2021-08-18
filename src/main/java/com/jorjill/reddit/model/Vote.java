@@ -18,10 +18,14 @@ public class Vote {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long voteId;
     private VoteType voteType;
+
+    // one post has many votes
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="postId",referencedColumnName = "postId")
     private Post post;
+
+    // one user has many votes
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId",referencedColumnName = "userId")
     private User user;
