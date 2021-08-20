@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
 
@@ -14,19 +16,15 @@ import java.time.Instant;
 @Entity
 public class Comment {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long id;
     @NotEmpty
     private String text;
-
-    // many comments has one post
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "postId", referencedColumnName = "postId")
     private Post post;
     private Instant createdDate;
-
-    // many comments has one user
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="userId",referencedColumnName = "userId")
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
 }

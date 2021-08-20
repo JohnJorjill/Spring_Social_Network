@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.IDENTITY;
 import javax.validation.constraints.NotBlank;
 import java.time.Instant;
 
@@ -18,7 +20,7 @@ import java.time.Instant;
 @NoArgsConstructor
 public class Post {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long postId;
     @NotBlank(message = "Post Name cannot be empty or Null")
     private String postName;
@@ -27,14 +29,12 @@ public class Post {
     @Nullable
     @Lob
     private String description;
-    private Integer voteCount=0;
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="userId", referencedColumnName = "userId")
+    private Integer voteCount = 0;
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
     private Instant createdDate;
-
-    // one subreddit has many posts
-    @ManyToOne(fetch=FetchType.LAZY)
-    @JoinColumn(name="id",referencedColumnName = "id")
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "id", referencedColumnName = "id")
     private Subreddit subreddit;
 }

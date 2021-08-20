@@ -18,7 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
@@ -85,10 +85,14 @@ public class AuthService {
         userRepository.save(user);
     }
 
+    // login
     public AuthenticationResponse login(LoginRequest loginRequest) {
+        // get authentication through securityconfig and userdetailserviceimpl
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authenticate);
+        // generates token
         String token = jwtProvider.generateToken(authenticate);
+        // returns token
         return new AuthenticationResponse(token, loginRequest.getUsername());
     }
 }

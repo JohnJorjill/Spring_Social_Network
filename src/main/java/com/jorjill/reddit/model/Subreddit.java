@@ -29,8 +29,6 @@ public class Subreddit {
     @OneToMany(fetch = LAZY)
     private List<Post> posts;
     private Instant createdDate;
-
-    // one user has many subreddits
     @ManyToOne(fetch = LAZY)
     private User user;
 }

@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+import static javax.persistence.FetchType.LAZY;
+import static javax.persistence.GenerationType.IDENTITY;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,18 +18,14 @@ import javax.validation.constraints.NotNull;
 @Builder
 public class Vote {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = IDENTITY)
     private Long voteId;
     private VoteType voteType;
-
-    // one post has many votes
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="postId",referencedColumnName = "postId")
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "postId", referencedColumnName = "postId")
     private Post post;
-
-    // one user has many votes
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "userId",referencedColumnName = "userId")
+    @ManyToOne(fetch = LAZY)
+    @JoinColumn(name = "userId", referencedColumnName = "userId")
     private User user;
 }
