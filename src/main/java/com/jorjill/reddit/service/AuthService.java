@@ -102,14 +102,15 @@ public class AuthService {
     public AuthenticationResponse login(LoginRequest loginRequest) {
         // get authentication through securityconfig and userdetailserviceimpl
         Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
+        // if authenticated, set current session
         SecurityContextHolder.getContext().setAuthentication(authenticate);
-        // generates token
+        // generate token
         String token = jwtProvider.generateToken(authenticate);
-        // returns token
+        // return token
         return AuthenticationResponse.builder()
                 .authenticationToken(token)
-                .refreshToken(refreshTokenService.generateRefreshToken().getToken())
-                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis()))
+                .refreshToken(refreshTokenService.generateRefreshToken().getToken()) // generates refresh token
+                .expiresAt(Instant.now().plusMillis(jwtProvider.getJwtExpirationInMillis())) // sets expiration
                 .username(loginRequest.getUsername())
                 .build();
     }

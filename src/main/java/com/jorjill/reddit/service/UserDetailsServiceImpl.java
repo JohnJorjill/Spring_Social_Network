@@ -15,17 +15,19 @@ import java.util.Collection;
 import java.util.Optional;
 import static java.util.Collections.singletonList;
 
+// implements user detail service
 @Service
 @AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 
-    // returns user details by username
+    // returns userdetails object by username
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) {
-        // get user
+        // get user from database
         Optional<User> userOptional = userRepository.findByUsername(username);
+
         User user = userOptional
                 .orElseThrow(() -> new UsernameNotFoundException("No user " +
                         "Found with username : " + username));
