@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 
 @Mapper(componentModel="spring")
 public interface CommentMapper {
+
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "text", source = "commentsDto.text")
     @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
@@ -19,4 +20,5 @@ public interface CommentMapper {
     @Mapping(target = "postId", expression = "java(comment.getPost().getPostId())")
     @Mapping(target = "userName", expression = "java(comment.getUser().getUsername())")
     CommentsDto mapToDto(Comment comment);
+
 }

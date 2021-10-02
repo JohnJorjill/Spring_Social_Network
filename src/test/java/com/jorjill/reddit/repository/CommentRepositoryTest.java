@@ -4,7 +4,6 @@ import com.jorjill.reddit.model.Comment;
 import com.jorjill.reddit.model.Post;
 import com.jorjill.reddit.model.User;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -12,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
@@ -20,7 +18,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class CommentRepositoryTest {
 
     @Autowired
-    private CommentRepository underTest;
+    private CommentRepository commentRepository;
     @Autowired
     private PostRepository postRepository;
     @Autowired
@@ -28,11 +26,11 @@ class CommentRepositoryTest {
 
     @AfterEach
     void tearDown() {
-        underTest.deleteAll();
+        commentRepository.deleteAll();
     }
 
     @Test
-    void findByPostTest1(){
+    void findByPostTestReturnsComment(){
         // given
         Comment comment = new Comment();
         Post post = new Post();
@@ -43,27 +41,32 @@ class CommentRepositoryTest {
         User user = new User();
         userRepository.save(user);
         comment.setUser(user);
-        underTest.save(comment);
+        // saving comment with post
+        commentRepository.save(comment);
+
         // when
-        List<Comment> expected = underTest.findByPost(post);
+        // find comment by post
+        List<Comment> expected = commentRepository.findByPost(post);
+
         // then
+        // returned comment is equal to comment
         assertThat(expected.get(0)).isEqualTo(comment);
     }
 
     @Test
-    void findByPostTest2(){
+    void findByPostTestReturnsEmpty(){
         // given
         Post post = new Post();
         postRepository.save(post);
         List<Comment> result = new ArrayList<Comment>();
         // when
-        List<Comment> expected = underTest.findByPost(post);
+        List<Comment> expected = commentRepository.findByPost(post);
         // then
         assertThat(expected).isEqualTo(result);
     }
 
     @Test
-    void findAllByUserTest1(){
+    void findAllByUserTestReturnsValue(){
         // given
         Comment comment = new Comment();
         Post post = new Post();
@@ -74,21 +77,21 @@ class CommentRepositoryTest {
         User user = new User();
         userRepository.save(user);
         comment.setUser(user);
-        underTest.save(comment);
+        commentRepository.save(comment);
         // when
-        List<Comment> expected = underTest.findAllByUser(user);
+        List<Comment> expected = commentRepository.findAllByUser(user);
         // then
         assertThat(expected.get(0)).isEqualTo(comment);
     }
 
     @Test
-    void findAllByUserTest2(){
+    void findAllByUserTestReturnsEmpty(){
         // given
         User user = new User();
         userRepository.save(user);
         List<Comment> result = new ArrayList<Comment>();
         // when
-        List<Comment> expected = underTest.findAllByUser(user);
+        List<Comment> expected = commentRepository.findAllByUser(user);
         // then
         assertThat(expected).isEqualTo(result);
     }
